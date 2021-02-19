@@ -1854,11 +1854,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     "itemTitle": String,
-    "itemContent": String,
+    "itemDescription": String,
     "price": Number
   }
 });
@@ -1942,35 +1941,25 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     this.loading = true;
-    console.log("created");
-    setTimeout(function () {
-      _this.bookables = [{
-        title: "Cheap AF Villa!",
-        content: "A very cheap villa."
-      }, {
-        title: "Cheap fucking Villa 2.",
-        content: "A very chepeaous villa 2."
-      }, {
-        title: "Cheap fucking Villa 3.",
-        content: "A very chepeaous villa 3."
-      }, {
-        title: "Cheap fucking Villa 4.",
-        content: "A very chepeaous villa 4."
-      }, {
-        title: "Cheap fucking Villa 5.",
-        content: "A very chepeaous villa 5."
-      }, {
-        title: "Cheap fucking Villa 6.",
-        content: "A very chepeaous villa 6."
-      }, {
-        title: "Cheap fucking Villa 7.",
-        content: "A very chepeaous villa 7."
-      }, {
-        title: "Cheap fucking Villa 8.",
-        content: "A very chepeaous villa 8."
-      }];
+    var p = new Promise(function (resolve, reject) {
+      console.log(resolve);
+      console.log(reject);
+      setTimeout(function () {
+        return resolve("Hello!");
+      }, 3000);
+    }).then(function (result) {
+      return "Hello again " + result;
+    }).then(function (result) {
+      return console.log(result);
+    })["catch"](function (result) {
+      return console.log("Error ".concat(result));
+    });
+    console.log(p);
+    var request = axios.get("/api/bookables").then(function (response) {
+      _this.bookables = response.data;
       _this.loading = false;
-    }, 2000);
+    });
+    console.log(request);
   }
 });
 
@@ -37880,14 +37869,14 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
+  return _c("div", { staticClass: "card w-100" }, [
     _c("div", { staticClass: "card-body" }, [
       _c("h5", { staticClass: "card-title" }, [
         _vm._v(" " + _vm._s(_vm.itemTitle) + " ")
       ]),
       _vm._v(" "),
       _c("p", { staticClass: "card-text" }, [
-        _vm._v(" " + _vm._s(_vm.itemContent) + " ")
+        _vm._v(" " + _vm._s(_vm.itemDescription) + " ")
       ])
     ])
   ])
@@ -37929,12 +37918,15 @@ var render = function() {
                 _vm._l(_vm.bookablesInRow(row), function(bookable, column) {
                   return _c(
                     "div",
-                    { key: "row" + row + column, staticClass: "col" },
+                    {
+                      key: "row" + row + column,
+                      staticClass: "col d-flex align-items-stretch"
+                    },
                     [
                       _c("bookable-list-item", {
                         attrs: {
                           "item-title": bookable.title,
-                          "item-content": bookable.content,
+                          "item-description": bookable.description,
                           price: 1000
                         }
                       })
