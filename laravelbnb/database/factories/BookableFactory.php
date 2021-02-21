@@ -16,7 +16,8 @@ class BookableFactory extends Factory
      */
     protected $model = Bookable::class;
 
-    protected $suffix = ['Villa',
+    protected $suffix = [
+        'Villa',
         'House',
         'Cottage',
         'Luxury Villas',
