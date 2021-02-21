@@ -18,7 +18,7 @@
                     placeholder="Start date"
                     v-model="from"
                     @keyup.enter="check"
-                    :class="[{'is-invalid': this.errorFor('from')}]"
+                    :class="[{ 'is-invalid': this.errorFor('from') }]"
                 />
                 <div
                     class="invalid-feedback"
@@ -37,7 +37,7 @@
                     placeholder="End date"
                     v-model="to"
                     @keyup.enter="check"
-                    :class="[{'is-invalid': this.errorFor('to')}]"
+                    :class="[{ 'is-invalid': this.errorFor('to') }]"
                 />
 
                 <div class="invalid-feedback"
@@ -56,6 +56,10 @@
 
 <script>
 export default {
+    props: {
+        bookableId: String
+    },
+
     data () {
         return {
             from: null,
@@ -69,18 +73,18 @@ export default {
     methods: {
         check() {
             this.loading = true;
-            // this.errors = null;
+            this.errors = null;
 
             axios
                 .get(
-                    `/api/bookables/${this.$route.params.id}/availability?from=${this.from}&to=${this.to}`
+                    `/api/bookables/${this.bookableId}/availability?from=${this.from}&to=${this.to}`
                 )
                 .then(response => {
                     this.status = response.status;
                 })
                 .catch(error => {
                     if (422 === error.response.status) {
-                        this.error = error.response.data.errors;
+                        this.errors = error.response.data.errors;
                     }
 
                     this.status = error.response.status;
